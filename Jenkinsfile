@@ -1,6 +1,6 @@
 pipeline {
 agent any
-  
+  tools{NodeJS "node"}
 stages {
 
           stage('npm install package'){
