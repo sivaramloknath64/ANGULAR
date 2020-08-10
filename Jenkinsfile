@@ -1,4 +1,9 @@
 pipeline {
+  environment {
+    registry = "sivaramloknath64/angular"
+    registryCredential = 'docker_hub_loknath'
+    dockerImage = ''
+  }
 agent any
   
   tools {nodejs "node14"}
@@ -23,7 +28,10 @@ stages {
    stage ('Build Docker Image') {
       steps{
         echo "Building Docker Image"
-        
+   
+        script {
+          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+        }
       
       }
     }
@@ -33,6 +41,11 @@ stages {
       steps{
         echo "pushing the docker image"
         
+        script {
+          docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+              dockerImage.push('latest')
+          }
       
       }
     }
@@ -41,6 +54,11 @@ stages {
     stage ('deploy to dev env ') {
       steps{
         echo "deploying to dev ENVIRONMENT"
+     
+         sh "docker rm -f petclinic || true"
+     sh " docker run -d --name=petclinic -p 8081:8080 sivaramloknath64/angular"     
+              
+        
         
       }
     }
