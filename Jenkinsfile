@@ -7,10 +7,9 @@ stages {
           stage('npm install package'){
                 steps{
                   echo "installing the npm package "
-                    sh script: '''
-                         npm install
+                    sh ' npm install'
                          
-                     '''
+                     
                     }
             }
                 stage('Build'){
