@@ -37,14 +37,25 @@ stages {
     }
 
 
-  
-    stage ('deploy to dev env ') {
+   stage ('Push Docker Image') {
       steps{
-        echo "deploying to dev ENVIRONMENT"
-        
-        
+        echo "Pushing Docker Image"
+        script {
+          docker.withRegistry( '', registryCredential ) {
+              dockerImage.push()
+              dockerImage.push('latest')
+          }
+        }
       }
     }
+  
+  
+  
+  
+  
+  
+  
+  
    
   
   
